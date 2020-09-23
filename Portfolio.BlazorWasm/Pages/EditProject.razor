@@ -4,10 +4,10 @@
 
 <h3>EditProject</h3>
 
-<input @bind-value="newProjectName" placeholder="@project.Title">
-<input @bind-value="newRequirements" placeholder="@project.Requirements">
-<input @bind-value="newDesign" placeholder="@project.Design">
-<input @bind-value="newCompletedDate" placeholder="@DateTime.Now">
+<input @bind-value="newProjectName">
+<input @bind-value="newRequirements">
+<input @bind-value="newDesign">
+<input @bind-value="newCompletedDate">
 <button @onclick="Edit">Edit Project</button>
 
 <div>
@@ -28,7 +28,7 @@
     private DateTime newCompletedDate;
     private Project project = new Project();
 
-    public async void Edit()
+    public void Edit()
     {
         project.Title = newProjectName ?? project.Title;
         project.Requirements = newRequirements ?? project.Requirements;
@@ -40,5 +40,9 @@
     protected override async Task OnInitializedAsync()
     {
         project = await projectApi.GetProject(id);
+        newProjectName = project.Title;
+        newRequirements = project.Requirements;
+        newDesign = project.Design;
+        newCompletedDate = project.CompletedDate;
     }
 }
