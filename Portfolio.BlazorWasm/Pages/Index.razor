@@ -1,0 +1,64 @@
+﻿@page "/"
+@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject NavigationManager uriHelper
+
+@using Portfolio.shared
+
+<h3>Add a project</h3>
+<input @bind-value="newProjectName" placeholder="Title">
+<input @bind-value="newRequirements" placeholder="Requirments">
+<input @bind-value="newDesign" placeholder="Design">
+<input @bind-value="newCompletedDate" placeholder="Date Completed">
+<button @onclick="addProject">Add Project</button>
+<hr />
+
+<h3>List of Projects</h3>
+<p>
+    @foreach (var p in projects)
+    {
+        string link = $"/editproject/{p.Id}";
+        <ul>
+            <li>@p.Title</li>
+        </ul>
+        <button @onclick="(() => Delete(p))">Delete</button>
+        <button @onclick="(() => NavToEdit(p.Id))">Edit</button>
+    }
+</p>
+
+
+@code {
+    private string newProjectName;
+    private string newRequirements;
+    private string newDesign;
+    private DateTime newCompletedDate;
+    private IEnumerable<Project> projects = new List<Project>();
+    private Project project = new Project();
+
+    private async Task addProject()
+    {
+        var project = new Project
+        {
+            Title = newProjectName,
+            Requirements = newRequirements,
+            Design = newDesign,
+            CompletedDate = newCompletedDate
+        };
+        await projectApi.AddProjectAsync(project);
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await projectApi.GetProjectsAsync();
+    }
+
+    private void Delete(Project project)
+    {
+        projectApi.DeleteProject(project);
+    }
+
+    private void NavToEdit(int id)
+    {
+        uriHelper.NavigateTo("/editproject/" + id);
+    }
+}
