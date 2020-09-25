@@ -43,5 +43,23 @@ namespace Portfolio.Api.Controllers
         }
         [HttpGet("[action]")]
         public async Task<Project> GetProject(int id) => await repository.Projects.Where(p => p.Id == id).FirstOrDefaultAsync();
+
+        [HttpGet("[action]")]
+        public async Task DefaultData()
+        {
+            await repository.AddProjectAsync(new Project
+            {
+                Title = "Project 1",
+                Requirements = "Demonstrate APIs with a database"
+            });
+
+
+            await repository.AddProjectAsync(new Project
+            {
+                Title = "Project 2",
+                Requirements = "No, seriously. Do that."
+            });
+        }
+
     }
 }
