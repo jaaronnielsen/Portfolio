@@ -1,4 +1,5 @@
 ﻿using Portfolio.shared;
+using Portfolio.shared.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,15 +35,25 @@ namespace Portfolio.BlazorWasm
            await client.PostAsJsonAsync("api/project/deleteproject", project);
         }
 
-        public async void EditProject(Project project)
+        public async void EditProject(ProjectViewModel project)
         {
            await client.PostAsJsonAsync("api/project/editproject", project);
         }
 
-        public async Task<Project> GetProject(int id)
+        public async Task AssignAsync(string categoryType, int projectId, string newName)
         {
-          
-            return await client.GetFromJsonAsync<Project>("api/project/getproject?id=" + id);
+            var assignBody = new AssignRequest
+            {
+                CategoryType = categoryType,
+                Name = newName,
+                ProjectId = projectId
+            };
+            await client.PostAsJsonAsync($"api/project/assign/", assignBody);
+        }
+
+        public async Task<ProjectViewModel> GetProjectByIDAsync(int id)
+        {
+            return await client.GetFromJsonAsync<ProjectViewModel>($"api/project/{id}");
         }
     }
 }

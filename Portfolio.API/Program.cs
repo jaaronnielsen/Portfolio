@@ -20,7 +20,6 @@ namespace Portfolio.Api
             using (var scope = host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                db.Database.EnsureCreated();
                 db.Database.Migrate();
             }
             host.Run();
