@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Portfolio.shared;
-using Portfolio.shared.ViewModels;
+﻿using Portfolio.shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +23,7 @@ namespace Portfolio.Api.Data
             await context.SaveChangesAsync();
         }
 
-        public void EditProjects(ProjectViewModel project)
+        public void EditProjects(Project project)
         {
             var entity = context.Projects.FirstOrDefault(t => t.Id == project.Id);
 
@@ -51,64 +49,6 @@ namespace Portfolio.Api.Data
         {
             context.Projects.Remove(project);
             context.SaveChanges();
-        }
-
-
-        public async Task AssignCategoryAsync(AssignRequest assignRequest)
-        {
-            switch (assignRequest.CategoryType)
-            {
-                case Project.LanguageCategory:
-                    var language = await context.Languages.FirstOrDefaultAsync(l => l.Name == assignRequest.Name);
-                    if (language == null)
-                    {
-                        language = new Language { Name = assignRequest.Name };
-                        context.Languages.Add(language);
-                        await context.SaveChangesAsync();
-                    }
-                    var lc = new ProjectLanguage
-                    {
-                        ProjectId = assignRequest.ProjectId,
-                        LanguageId = language.Id
-                    };
-                    context.ProjectLanguages.Add(lc);
-                    await context.SaveChangesAsync();
-                    break;
-                case Project.PlatformCategory:
-                    var platform = await context.Platforms.FirstOrDefaultAsync(p => p.Name == assignRequest.Name);
-                    if (platform == null)
-                    {
-                        platform = new Platform { Name = assignRequest.Name };
-                        context.Platforms.Add(platform);
-                        await context.SaveChangesAsync();
-                    }
-                    var pc = new ProjectPlatform
-                    {
-                        ProjectId = assignRequest.ProjectId,
-                        PlatformId = platform.Id
-                    };
-                    context.ProjectPlatform.Add(pc);
-                    await context.SaveChangesAsync();
-                    break;
-                case Project.TechnologyCategory:
-                    var technology = await context.Technologies.FirstOrDefaultAsync(t => t.Name == assignRequest.Name);
-                    if (technology == null)
-                    {
-                        technology = new Technology { Name = assignRequest.Name };
-                        context.Technologies.Add(technology);
-                        await context.SaveChangesAsync();
-                    }
-                    var tc = new ProjectTechnology
-                    {
-                        ProjectId = assignRequest.ProjectId,
-                        TechnologyId = technology.Id
-                    };
-                    context.ProjectTechnology.Add(tc);
-                    await context.SaveChangesAsync();
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }

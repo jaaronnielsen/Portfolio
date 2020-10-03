@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Api.Data;
 using Portfolio.shared;
-using Portfolio.shared.ViewModels;
 
 namespace Portfolio.Api.Controllers
 {
@@ -22,16 +21,8 @@ namespace Portfolio.Api.Controllers
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-
         [HttpGet()]
-        public async Task<List<ProjectViewModel>> Get()
-        {
-            return await repository.Projects
-                .Include(p => p.ProjectLanguages)
-                    .ThenInclude(pc => pc.Language)
-                .Select(p => new ProjectViewModel(p))
-                .ToListAsync();
-        }
+        public async Task<IEnumerable<Project>> Get() => await repository.Projects.ToListAsync();
 
         [HttpPost()]
         public async Task Post(Project project)
@@ -40,7 +31,7 @@ namespace Portfolio.Api.Controllers
         }
 
         [HttpPost("[action]")]
-        public void EditProject(ProjectViewModel project)
+        public void EditProject(Project project)
         {
             repository.EditProjects(project);
         }
@@ -50,17 +41,8 @@ namespace Portfolio.Api.Controllers
         {
             repository.DeleteProject(project);
         }
-        [HttpGet("{id}")]
-        public async Task<ProjectViewModel> GetProject(int id)
-        {
-            var project = await repository.Projects
-               .Include(p => p.ProjectLanguages)
-                   .ThenInclude(pc => pc.Language)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-
-            return new ProjectViewModel(project);
-        }
+        [HttpGet("[action]")]
+        public async Task<Project> GetProject(int id) => await repository.Projects.Where(p => p.Id == id).FirstOrDefaultAsync();
 
         [HttpGet("[action]")]
         public async Task DefaultData()
@@ -77,13 +59,6 @@ namespace Portfolio.Api.Controllers
                 Title = "Project 2",
                 Requirements = "No, seriously. Do that."
             });
-        }
-
-
-        [HttpPost("[action]")]
-        public async Task Assign(AssignRequest assignRequest)
-        {
-            await repository.AssignCategoryAsync(assignRequest);
         }
 
     }

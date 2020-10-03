@@ -17,8 +17,7 @@ namespace Portfolio.BlazorWasm
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            var baseAddress = builder.Configuration["HttpClientBaseAddress"];
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://jaaronnielsenportfolio.herokuapp.com/") });
             builder.Services.AddScoped<ProjectApiService>();
 
             await builder.Build().RunAsync();

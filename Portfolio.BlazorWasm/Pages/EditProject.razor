@@ -1,8 +1,6 @@
 ﻿@page "/editproject/{Id:int}"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
-@using Portfolio.shared.ViewModels
 @using Portfolio.shared
-
 
 <h3>EditProject</h3>
 
@@ -28,7 +26,7 @@
     private string newRequirements;
     private string newDesign;
     private DateTime newCompletedDate;
-    private ProjectViewModel project = new ProjectViewModel();
+    private Project project = new Project();
 
     public void Edit()
     {
@@ -41,7 +39,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        project = await projectApi.GetProjectByIDAsync(id);
+        project = await projectApi.GetProject(id);
         newProjectName = project.Title;
         newRequirements = project.Requirements;
         newDesign = project.Design;
