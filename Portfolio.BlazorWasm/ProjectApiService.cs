@@ -1,5 +1,4 @@
 ﻿using Portfolio.shared;
-using Portfolio.shared.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +34,7 @@ namespace Portfolio.BlazorWasm
            await client.PostAsJsonAsync("api/project/deleteproject", project);
         }
 
-        public async void EditProject(ProjectViewModel project)
+        public async void EditProject(Project project)
         {
            await client.PostAsJsonAsync("api/project/editproject", project);
         }
@@ -51,9 +50,24 @@ namespace Portfolio.BlazorWasm
             await client.PostAsJsonAsync($"api/project/assign/", assignBody);
         }
 
-        public async Task<ProjectViewModel> GetProjectByIDAsync(int id)
+        public async Task<Project> GetProjectByIDAsync(int id)
         {
-            return await client.GetFromJsonAsync<ProjectViewModel>($"api/project/{id}");
+            return await client.GetFromJsonAsync<Project>($"api/project/{id}");
+        }
+
+        public async Task<IEnumerable<Language>> GetLanguagesByProjectId(int Id)
+        {
+            return await client.GetFromJsonAsync<IEnumerable<Language>>("api/project/getlanguages?id=" + Id);
+        }
+
+        public async Task<IEnumerable<Technology>> GetTechnologyByProjectId(int Id)
+        {
+            return await client.GetFromJsonAsync<IEnumerable<Technology>>("api/project/gettechnologies?id=" + Id);
+        }
+
+        public async Task<IEnumerable<Platform>> GetPlatformsByProjectId(int Id)
+        {
+            return await client.GetFromJsonAsync<IEnumerable<Platform>>("api/project/getplatforms?id=" + Id);
         }
     }
 }

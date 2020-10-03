@@ -1,0 +1,26 @@
+﻿@page "/technology"
+@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@using Portfolio.shared
+
+<h3>Technologies</h3>
+
+
+<div>
+   
+</div>
+
+@code {
+    private Technology Technology = new Technology();
+    private IEnumerable<Project> projects = new List<Project>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await projectApi.GetProjectsAsync();
+    }
+
+    private async Task getProjectsForLanguages()
+    {
+
+    }
+}

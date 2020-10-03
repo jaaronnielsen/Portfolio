@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Portfolio.shared;
-using Portfolio.shared.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +18,25 @@ namespace Portfolio.Api.Data
 
         public IQueryable<Project> Projects => context.Projects;
 
+        public IQueryable<Language> Languages => context.Languages;
+
+        public IQueryable<ProjectLanguage> ProjectLanguages => context.ProjectLanguages;
+
+        public IQueryable<Technology> Technologies => context.Technologies;
+
+        public IQueryable<Platform> Platforms => context.Platforms;
+
+        public IQueryable<ProjectTechnology> ProjectTechnologies => context.ProjectTechnology;
+
+        public IQueryable<ProjectPlatform> ProjectPlatforms => context.ProjectPlatform;
+
         public async Task AddProjectAsync(Project project)
         {
             context.Projects.Add(project);
             await context.SaveChangesAsync();
         }
 
-        public void EditProjects(ProjectViewModel project)
+        public void EditProjects(Project project)
         {
             var entity = context.Projects.FirstOrDefault(t => t.Id == project.Id);
 
@@ -52,7 +63,6 @@ namespace Portfolio.Api.Data
             context.Projects.Remove(project);
             context.SaveChanges();
         }
-
 
         public async Task AssignCategoryAsync(AssignRequest assignRequest)
         {

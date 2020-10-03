@@ -1,0 +1,21 @@
+﻿@page "/language"
+@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@using Portfolio.shared
+
+<h4>@project.ProjectLanguages.Select(x => x.Language.Name)</h4>
+<p><a href="editproject/@project.Id">@project.Title</a></p>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Language Language = new Language();
+    private Project project = new Project();
+
+    async Task refreshAsync() => project = await projectApi.GetProjectByIDAsync(Id);
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id == 0)
+            return;
+        project = await projectApi.GetProjectByIDAsync(Id);
+        await refreshAsync();
+    }
+}

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Api.Data;
 using Portfolio.shared;
-using Portfolio.shared.ViewModels;
+
 
 namespace Portfolio.Api.Controllers
 {
@@ -24,12 +24,15 @@ namespace Portfolio.Api.Controllers
 
 
         [HttpGet()]
-        public async Task<List<ProjectViewModel>> Get()
+        public async Task<List<Project>> Get()
         {
             return await repository.Projects
                 .Include(p => p.ProjectLanguages)
                     .ThenInclude(pc => pc.Language)
-                .Select(p => new ProjectViewModel(p))
+                .Include(p => p.ProjectPlatforms)
+                    .ThenInclude(pc => pc.Platform)
+                .Include(p => p.ProjectTechnologies)
+                    .ThenInclude(pc => pc.Technology)
                 .ToListAsync();
         }
 
@@ -40,7 +43,7 @@ namespace Portfolio.Api.Controllers
         }
 
         [HttpPost("[action]")]
-        public void EditProject(ProjectViewModel project)
+        public void EditProject(Project project)
         {
             repository.EditProjects(project);
         }
@@ -51,15 +54,20 @@ namespace Portfolio.Api.Controllers
             repository.DeleteProject(project);
         }
         [HttpGet("{id}")]
-        public async Task<ProjectViewModel> GetProject(int id)
+        public async Task<Project> GetProject(int id)
         {
-            var project = await repository.Projects
+            Project project = new Project();
+             project = await repository.Projects
                .Include(p => p.ProjectLanguages)
                    .ThenInclude(pc => pc.Language)
+               .Include(p => p.ProjectPlatforms)
+                   .ThenInclude(pc => pc.Platform)
+               .Include(p => p.ProjectTechnologies)
+                   .ThenInclude(pc => pc.Technology)
                 .FirstOrDefaultAsync(p => p.Id == id);
+                
 
-
-            return new ProjectViewModel(project);
+            return project;
         }
 
         [HttpGet("[action]")]
@@ -84,6 +92,24 @@ namespace Portfolio.Api.Controllers
         public async Task Assign(AssignRequest assignRequest)
         {
             await repository.AssignCategoryAsync(assignRequest);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Language>> GetLanguages(int id)
+        {
+           return await repository.ProjectLanguages.Where(pl => pl.ProjectId == id).Select(l => l.Language).ToListAsync();
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Technology>> GetTechnologies(int id)
+        {
+            return await repository.ProjectTechnologies.Where(pl => pl.ProjectId == id).Select(t => t.Technology).ToListAsync();
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Platform>> GetPlatforms(int id)
+        {
+            return await repository.ProjectPlatforms.Where(pl => pl.ProjectId == id).Select(p => p.Platform).ToListAsync();
         }
 
     }
