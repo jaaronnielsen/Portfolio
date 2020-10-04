@@ -2,7 +2,6 @@
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
 
-
 <h3>EditProject</h3>
 
 <input @bind-value="newProjectName">
@@ -19,9 +18,13 @@
 <button @onclick="(() => assign(platform))">Add Platform</button>
 
 <div>
+    <label>Title</label>
     <p>@project.Title</p>
+    <label>Requirments</label>
     <p>@project.Requirements</p>
+    <label>Design</label>
     <p>@project.Design</p>
+    <label>Date Completed</label>
     <p>@project.CompletedDate</p>
     <div>
         <h5>Platforms</h5>

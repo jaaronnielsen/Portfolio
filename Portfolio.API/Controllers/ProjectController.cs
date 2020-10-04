@@ -22,7 +22,6 @@ namespace Portfolio.Api.Controllers
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-
         [HttpGet()]
         public async Task<List<Project>> Get()
         {

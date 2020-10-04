@@ -16,6 +16,7 @@
 <p>
     @foreach (var p in projects)
     {
+        string link = $"/editproject/{p.Id}";
         <ul>
             <li>@p.Title</li>
       

@@ -39,7 +39,7 @@ namespace Portfolio.BlazorWasm
            await client.PostAsJsonAsync("api/project/editproject", project);
         }
 
-        public async Task AssignAsync(string categoryType, int projectId, string newName)
+        public async Task<Project> GetProject(int id)
         {
             var assignBody = new AssignRequest
             {
