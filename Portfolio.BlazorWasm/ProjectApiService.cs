@@ -39,16 +39,16 @@ namespace Portfolio.BlazorWasm
            await client.PostAsJsonAsync("api/project/editproject", project);
         }
 
-        public async Task<Project> GetProject(int id)
-        {
-            var assignBody = new AssignRequest
-            {
-                CategoryType = categoryType,
-                Name = newName,
-                ProjectId = projectId
-            };
-            await client.PostAsJsonAsync($"api/project/assign/", assignBody);
-        }
+        //public async Task<Project> GetProject(int id)
+        //{
+        //    var assignBody = new AssignRequest
+        //    {
+        //        CategoryType = categoryType,
+        //        Name = newName,
+        //        ProjectId = projectId
+        //    };
+        //    await client.PostAsJsonAsync($"api/project/assign/", assignBody);
+        //}
 
         public async Task<Project> GetProjectByIDAsync(int id)
         {
@@ -68,6 +68,30 @@ namespace Portfolio.BlazorWasm
         public async Task<IEnumerable<Platform>> GetPlatformsByProjectId(int Id)
         {
             return await client.GetFromJsonAsync<IEnumerable<Platform>>("api/project/getplatforms?id=" + Id);
+        }
+
+        public async Task<IEnumerable<Project>> getProjectsForLanguages(int Id)
+        {
+            return await client.GetFromJsonAsync<IEnumerable<Project>>("api/project/getprojectsforlanguage?id=" + Id);
+        }
+        public async Task<IEnumerable<Project>> getProjectsForTechnologies(int Id)
+        {
+            return await client.GetFromJsonAsync<IEnumerable<Project>>("api/project/getprojectsfortechnology?id=" + Id);
+        }
+        public async Task<IEnumerable<Project>> getProjectsForPlatforms(int Id)
+        {
+            return await client.GetFromJsonAsync<IEnumerable<Project>>("api/project/getprojectsforplatform?id=" + Id);
+        }
+
+        public async Task AssignAsync(string categoryType, int projectId, string newName)
+        {
+            var assignBody = new AssignRequest
+            {
+                CategoryType = categoryType,
+                Name = newName,
+                ProjectId = projectId
+            };
+            await client.PostAsJsonAsync($"api/project/assign/", assignBody);
         }
     }
 }

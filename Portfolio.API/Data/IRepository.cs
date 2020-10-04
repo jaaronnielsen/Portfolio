@@ -19,5 +19,6 @@ namespace Portfolio.Api.Data
         void EditProjects(Project project);
         Project GetProject(int id);
         void DeleteProject(Project project);
+        Task AssignCategoryAsync(AssignRequest assignRequest);
     }
 }

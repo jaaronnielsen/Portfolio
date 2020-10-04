@@ -9,6 +9,11 @@ namespace Portfolio.shared
 {
     public class Project
     {
+
+        public const string LanguageCategory = "language";
+        public const string PlatformCategory = "platform";
+        public const string TechnologyCategory = "technology";
+
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
@@ -24,5 +29,9 @@ namespace Portfolio.shared
 
         [JsonPropertyName("completedDate")]
         public DateTime CompletedDate { get; set; }
+
+        public List<ProjectLanguage> ProjectLanguages { get; set; }
+        public List<ProjectTechnology> ProjectTechnologies { get; set; }
+        public List<ProjectPlatform> ProjectPlatforms { get; set; }
     }
 }

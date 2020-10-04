@@ -111,5 +111,25 @@ namespace Portfolio.Api.Controllers
             return await repository.ProjectPlatforms.Where(pl => pl.ProjectId == id).Select(p => p.Platform).ToListAsync();
         }
 
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Project>> GetProjectsForLanguage(int id)
+        {
+            return await repository.ProjectLanguages.Where(pl => pl.LanguageId == id).Select(p => p.Project).ToListAsync();
+        }
+
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Project>> GetProjectsForTechnology(int id)
+        {
+            return await repository.ProjectTechnologies.Where(pl => pl.TechnologyId == id).Select(p => p.Project).ToListAsync();
+        }
+
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Project>> GetProjectsForPlatform(int id)
+        {
+            return await repository.ProjectPlatforms.Where(pl => pl.PlatformId == id).Select(p => p.Project).ToListAsync();
+        }
+
     }
 }

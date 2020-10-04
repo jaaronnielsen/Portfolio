@@ -1,8 +1,8 @@
-﻿@page "/technology/{Id:int}/{Name}"
+﻿@page "/platform/{Id:int}/{Name}"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
 
-<h3>Technologies</h3>
+<h3>Platform</h3>
 <h4>@Name</h4>
 <div>
     @foreach (var p in projects)
@@ -25,6 +25,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        projects = await projectApi.getProjectsForTechnologies(Id);
+        projects = await projectApi.getProjectsForPlatforms(Id);
     }
 }

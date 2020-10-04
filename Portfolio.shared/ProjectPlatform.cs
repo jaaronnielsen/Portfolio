@@ -10,5 +10,6 @@ namespace Portfolio.shared
         public int ProjectId { get; set; }
         public int PlatformId { get; set; }
         public Platform Platform { get; set; }
+        public Project Project { get; set; }
     }
 }
