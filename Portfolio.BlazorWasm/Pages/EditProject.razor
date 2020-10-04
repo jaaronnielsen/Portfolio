@@ -110,17 +110,17 @@
     {
         if (category == language)
         {
-            await projectApi.AssignAsync(Portfolio.shared.Project.LanguageCategory, project.Id, newLanguageName);
+            await projectApi.AssignAsync(Portfolio.shared.Project.LanguageCategory, project.Id, newLanguageName.ToLower());
             await refreshAsync();
         }
         else if (category == technology)
         {
-            await projectApi.AssignAsync(Portfolio.shared.Project.TechnologyCategory, project.Id, newTechnologyName);
+            await projectApi.AssignAsync(Portfolio.shared.Project.TechnologyCategory, project.Id, newTechnologyName.ToLower());
             await refreshAsync();
         }
         else
         {
-            await projectApi.AssignAsync(Portfolio.shared.Project.PlatformCategory, project.Id, newPlatformName);
+            await projectApi.AssignAsync(Portfolio.shared.Project.PlatformCategory, project.Id, newPlatformName.ToLower());
             await refreshAsync();
         }
     }

@@ -10,8 +10,8 @@ using Portfolio.Api.Data;
 namespace Portfolio.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201003053922_MoreStuff")]
-    partial class MoreStuff
+    [Migration("20201004041834_newDatabase")]
+    partial class newDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -165,7 +165,7 @@ namespace Portfolio.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Portfolio.shared.Project", null)
+                    b.HasOne("Portfolio.shared.Project", "Project")
                         .WithMany("ProjectLanguages")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -180,7 +180,7 @@ namespace Portfolio.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Portfolio.shared.Project", null)
+                    b.HasOne("Portfolio.shared.Project", "Project")
                         .WithMany("ProjectPlatforms")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -189,7 +189,7 @@ namespace Portfolio.API.Migrations
 
             modelBuilder.Entity("Portfolio.shared.ProjectTechnology", b =>
                 {
-                    b.HasOne("Portfolio.shared.Project", null)
+                    b.HasOne("Portfolio.shared.Project", "Project")
                         .WithMany("ProjectTechnologies")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)

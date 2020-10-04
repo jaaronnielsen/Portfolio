@@ -25,14 +25,7 @@ namespace Portfolio.Api.Controllers
         [HttpGet()]
         public async Task<List<Project>> Get()
         {
-            return await repository.Projects
-                .Include(p => p.ProjectLanguages)
-                    .ThenInclude(pc => pc.Language)
-                .Include(p => p.ProjectPlatforms)
-                    .ThenInclude(pc => pc.Platform)
-                .Include(p => p.ProjectTechnologies)
-                    .ThenInclude(pc => pc.Technology)
-                .ToListAsync();
+            return await repository.Projects.ToListAsync();
         }
 
         [HttpPost()]
@@ -55,18 +48,7 @@ namespace Portfolio.Api.Controllers
         [HttpGet("{id}")]
         public async Task<Project> GetProject(int id)
         {
-            Project project = new Project();
-             project = await repository.Projects
-               .Include(p => p.ProjectLanguages)
-                   .ThenInclude(pc => pc.Language)
-               .Include(p => p.ProjectPlatforms)
-                   .ThenInclude(pc => pc.Platform)
-               .Include(p => p.ProjectTechnologies)
-                   .ThenInclude(pc => pc.Technology)
-                .FirstOrDefaultAsync(p => p.Id == id);
-                
-
-            return project;
+            return await repository.Projects.Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
         [HttpGet("[action]")]

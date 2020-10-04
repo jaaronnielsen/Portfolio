@@ -19,6 +19,36 @@ namespace Portfolio.API.Migrations
                 .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            modelBuilder.Entity("Portfolio.shared.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
+            modelBuilder.Entity("Portfolio.shared.Platform", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Platforms");
+                });
+
             modelBuilder.Entity("Portfolio.shared.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -36,6 +66,7 @@ namespace Portfolio.API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -132,7 +163,7 @@ namespace Portfolio.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Portfolio.shared.Project", null)
+                    b.HasOne("Portfolio.shared.Project", "Project")
                         .WithMany("ProjectLanguages")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -147,7 +178,7 @@ namespace Portfolio.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Portfolio.shared.Project", null)
+                    b.HasOne("Portfolio.shared.Project", "Project")
                         .WithMany("ProjectPlatforms")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -156,7 +187,7 @@ namespace Portfolio.API.Migrations
 
             modelBuilder.Entity("Portfolio.shared.ProjectTechnology", b =>
                 {
-                    b.HasOne("Portfolio.shared.Project", null)
+                    b.HasOne("Portfolio.shared.Project", "Project")
                         .WithMany("ProjectTechnologies")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
