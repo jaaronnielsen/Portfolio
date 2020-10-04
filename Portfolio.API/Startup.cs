@@ -29,12 +29,6 @@ namespace Portfolio.Api
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["DATABASE_URL"])));
             services.AddTransient<IRepository, EfCoreRepository>();
-
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
-
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -45,6 +39,10 @@ namespace Portfolio.Api
                                .AllowAnyHeader();
                     });
             });
+
+            services.AddControllersWithViews()
+               .AddNewtonsoftJson(options =>
+               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
