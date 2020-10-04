@@ -10,8 +10,8 @@ using Portfolio.Api.Data;
 namespace Portfolio.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201004041834_newDatabase")]
-    partial class newDatabase
+    [Migration("20201004044303_newNewDatabase")]
+    partial class newNewDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

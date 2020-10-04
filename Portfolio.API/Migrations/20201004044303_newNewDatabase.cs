@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Portfolio.API.Migrations
 {
-    public partial class newDatabase : Migration
+    public partial class newNewDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
