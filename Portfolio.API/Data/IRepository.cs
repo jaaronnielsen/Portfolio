@@ -17,7 +17,8 @@ namespace Portfolio.Api.Data
         IQueryable<ProjectPlatform> ProjectPlatforms { get; }
         Task AddProjectAsync(Project project);
         void EditProjects(Project project);
-        Project GetProject(int id);
+        Project GetProjectById(int id);
+        Project GetProjectBySlug(string slug);
         void DeleteProject(Project project);
         Task AssignCategoryAsync(AssignRequest assignRequest);
     }

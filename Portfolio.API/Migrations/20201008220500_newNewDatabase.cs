@@ -43,7 +43,8 @@ namespace Portfolio.API.Migrations
                     Title = table.Column<string>(nullable: false),
                     Requirements = table.Column<string>(nullable: true),
                     Design = table.Column<string>(nullable: true),
-                    CompletedDate = table.Column<DateTime>(nullable: false)
+                    CompletedDate = table.Column<DateTime>(nullable: false),
+                    Slug = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -160,6 +161,12 @@ namespace Portfolio.API.Migrations
                 name: "IX_ProjectPlatform_ProjectId",
                 table: "ProjectPlatform",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_Slug",
+                table: "Projects",
+                column: "Slug",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectTechnology_ProjectId",

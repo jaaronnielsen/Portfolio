@@ -45,10 +45,29 @@ namespace Portfolio.Api.Controllers
         {
             repository.DeleteProject(project);
         }
-        [HttpGet("{id}")]
-        public async Task<Project> GetProject(int id)
+
+        [HttpGet("{slug}")]
+        public async Task<Project> GetProjectBySlug(string slug)
         {
-            return await repository.Projects.Where(p => p.Id == id).FirstOrDefaultAsync();
+            return await repository.Projects.Where(p => p.Slug == slug).FirstOrDefaultAsync();
+        }
+
+        [HttpGet("[action]/{slug}")]
+        public async Task<Language> GetLanguageBySlug(string slug)
+        {
+            return await repository.Languages.Where(l => l.Slug == slug).FirstOrDefaultAsync();
+        }
+
+        [HttpGet("[action]/{slug}")]
+        public async Task<Technology> GetTechnologyBySlug(string slug)
+        {
+            return await repository.Technologies.Where(l => l.Slug == slug).FirstOrDefaultAsync();
+        }
+
+        [HttpGet("[action]/{slug}")]
+        public async Task<Platform> GetPlatformBySlug(string slug)
+        {
+            return await repository.Platforms.Where(l => l.Slug == slug).FirstOrDefaultAsync();
         }
 
         [HttpGet("[action]")]

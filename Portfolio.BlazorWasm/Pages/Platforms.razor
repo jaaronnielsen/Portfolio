@@ -1,15 +1,14 @@
-﻿@page "/platform/{Id:int}/{Name}"
+﻿@page "/platform/{Slug}"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
 
 <h3>Platform</h3>
-<h4>@Name</h4>
+<h4>@Platform.Name</h4>
 <div>
     @foreach (var p in projects)
     {
-        string link = $"/editproject/{p.Id}";
         <ul>
-            <li><a href="editproject/@p.Id">@p.Title</a></li>
+            <li><a href="editproject/@p.Slug">@p.Title</a></li>
 
         </ul>
     }
@@ -17,14 +16,14 @@
 
 @code {
     [Parameter]
-    public int Id { get; set; }
-    [Parameter]
-    public string Name { get; set; }
+    public string Slug { get; set; }
+    public Platform Platform = new Platform();
     private IEnumerable<Project> projects = new List<Project>();
 
 
     protected override async Task OnInitializedAsync()
     {
-        projects = await projectApi.getProjectsForPlatforms(Id);
+        Platform = await projectApi.GetPlatformBySlugAsync(Slug);
+        projects = await projectApi.getProjectsForPlatforms(Platform.Id);
     }
 }

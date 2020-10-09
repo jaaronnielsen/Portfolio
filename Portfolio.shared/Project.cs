@@ -30,6 +30,8 @@ namespace Portfolio.shared
         [JsonPropertyName("completedDate")]
         public DateTime CompletedDate { get; set; }
 
+        public string Slug { get; set; }
+
         public List<ProjectLanguage> ProjectLanguages { get; set; }
         public List<ProjectTechnology> ProjectTechnologies { get; set; }
         public List<ProjectPlatform> ProjectPlatforms { get; set; }

@@ -39,20 +39,24 @@ namespace Portfolio.BlazorWasm
            await client.PostAsJsonAsync("api/project/editproject", project);
         }
 
-        //public async Task<Project> GetProject(int id)
-        //{
-        //    var assignBody = new AssignRequest
-        //    {
-        //        CategoryType = categoryType,
-        //        Name = newName,
-        //        ProjectId = projectId
-        //    };
-        //    await client.PostAsJsonAsync($"api/project/assign/", assignBody);
-        //}
-
-        public async Task<Project> GetProjectByIDAsync(int id)
+        public async Task<Project> GetProjectBySlugAsync(string slug)
         {
-            return await client.GetFromJsonAsync<Project>($"api/project/{id}");
+            return await client.GetFromJsonAsync<Project>($"api/project/{slug}");
+        }
+
+        public async Task<Language> GetLanguageBySlugAsync(string slug)
+        {
+            return await client.GetFromJsonAsync<Language>($"api/project/getlanguagebyslug/{slug}");
+        }
+
+        public async Task<Technology> GetTechnologyBySlugAsync(string slug)
+        {
+            return await client.GetFromJsonAsync<Technology>($"api/project/gettechnologybyslug/{slug}");
+        }
+
+        public async Task<Platform> GetPlatformBySlugAsync(string slug)
+        {
+            return await client.GetFromJsonAsync<Platform>($"api/project/getplatformbyslug/{slug}");
         }
 
         public async Task<IEnumerable<Language>> GetLanguagesByProjectId(int Id)

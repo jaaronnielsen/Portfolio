@@ -22,7 +22,7 @@
       
         </ul>
         <button @onclick="(() => Delete(p))">Delete</button>
-        <button @onclick="(() => NavToEdit(p.Id))">Edit</button>
+        <button @onclick="(() => NavToEdit(p.Slug))">Edit</button>
     }
 </p>
 
@@ -58,8 +58,8 @@
         projectApi.DeleteProject(project);
     }
 
-    private void NavToEdit(int id)
+    private void NavToEdit(string slug)
     {
-        uriHelper.NavigateTo("editproject/" + id);
+        uriHelper.NavigateTo("editproject/" + slug);
     }
 }

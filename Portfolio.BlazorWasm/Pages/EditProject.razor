@@ -1,8 +1,8 @@
-﻿@page "/editproject/{Id:int}"
+﻿@page "/editproject/{Slug}"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
 
-<h3>EditProject</h3>
+<h3>@project.Title</h3>
 
 <input @bind-value="newProjectName">
 <input @bind-value="newRequirements">
@@ -32,7 +32,7 @@
             @foreach (var l in Languages)
             {
                 <ul>
-                    <li><a href="language/@l.Id/@l.Name">@l.Name</a></li>
+                    <li><a href="language/@l.Slug">@l.Name</a></li>
                 </ul>
             }
         </p>
@@ -43,7 +43,7 @@
             @foreach (var t in Technologies)
             {
                 <ul>
-                    <li><a href="technology/@t.Id/@t.Name">@t.Name</a></li>
+                    <li><a href="technology/@t.Slug">@t.Name</a></li>
                 </ul>
             }
         </p>
@@ -54,7 +54,7 @@
             @foreach (var p in Platforms)
             {
                 <ul>
-                    <li><a href="platform/@p.Id/@p.Name">@p.Name</a></li>
+                    <li><a href="platform/@p.Slug">@p.Name</a></li>
                 </ul>
             }
         </p>
@@ -64,8 +64,8 @@
 
 
 @code {
-        [Parameter]
-        public int Id { get; set; }
+    [Parameter]
+    public string Slug { get; set; }
     private string newProjectName;
     private string newRequirements;
     private string newDesign;
@@ -82,6 +82,8 @@
     private const string technology = "technology";
     private const string platform = "platform";
 
+    async Task refreshAsync() => project = await projectApi.GetProjectBySlugAsync(Slug);
+
     public void Edit()
     {
         project.Title = newProjectName ?? project.Title;
@@ -93,18 +95,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        project = await projectApi.GetProjectByIDAsync(Id);
+        project = await projectApi.GetProjectBySlugAsync(Slug);
         newProjectName = project.Title;
         newRequirements = project.Requirements;
         newDesign = project.Design;
         newCompletedDate = project.CompletedDate;
 
-        Languages = await projectApi.GetLanguagesByProjectId(Id);
-        Technologies = await projectApi.GetTechnologyByProjectId(Id);
-        Platforms = await projectApi.GetPlatformsByProjectId(Id);
+        Languages = await projectApi.GetLanguagesByProjectId(project.Id);
+        Technologies = await projectApi.GetTechnologyByProjectId(project.Id);
+        Platforms = await projectApi.GetPlatformsByProjectId(project.Id);
     }
 
-    async Task refreshAsync() => project = await projectApi.GetProjectByIDAsync(Id);
+
 
     private async Task assign(string category)
     {

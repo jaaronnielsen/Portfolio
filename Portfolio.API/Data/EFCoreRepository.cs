@@ -32,6 +32,7 @@ namespace Portfolio.Api.Data
 
         public async Task AddProjectAsync(Project project)
         {
+            project.Slug = project.Title.ToSlug();
             context.Projects.Add(project);
             await context.SaveChangesAsync();
         }
@@ -42,6 +43,7 @@ namespace Portfolio.Api.Data
 
             if (entity != null)
             {
+                entity.Slug = project.Title.ToSlug();
                 entity.Title = project.Title;
                 entity.Requirements = project.Requirements;
                 entity.Design = project.Design;
@@ -52,9 +54,15 @@ namespace Portfolio.Api.Data
             context.SaveChanges();
         }
 
-        public Project GetProject(int id)
+        public Project GetProjectById(int id)
         {
             Project project = context.Projects.First(project => project.Id == id);
+            return project;
+        }
+
+        public Project GetProjectBySlug(string slug)
+        {
+            Project project = context.Projects.First(project => project.Slug == slug);
             return project;
         }
 
@@ -72,7 +80,10 @@ namespace Portfolio.Api.Data
                     var language = await context.Languages.FirstOrDefaultAsync(l => l.Name == assignRequest.Name);
                     if (language == null)
                     {
-                        language = new Language { Name = assignRequest.Name };
+                        language = new Language {
+                            Name = assignRequest.Name,
+                            Slug = assignRequest.Name.ToSlug()
+                        };
                         context.Languages.Add(language);
                         await context.SaveChangesAsync();
                     }
@@ -88,7 +99,11 @@ namespace Portfolio.Api.Data
                     var platform = await context.Platforms.FirstOrDefaultAsync(p => p.Name == assignRequest.Name);
                     if (platform == null)
                     {
-                        platform = new Platform { Name = assignRequest.Name };
+                        platform = new Platform
+                        {
+                            Name = assignRequest.Name,
+                            Slug = assignRequest.Name.ToSlug()
+                        };
                         context.Platforms.Add(platform);
                         await context.SaveChangesAsync();
                     }
@@ -104,7 +119,11 @@ namespace Portfolio.Api.Data
                     var technology = await context.Technologies.FirstOrDefaultAsync(t => t.Name == assignRequest.Name);
                     if (technology == null)
                     {
-                        technology = new Technology { Name = assignRequest.Name };
+                        technology = new Technology
+                        {
+                            Name = assignRequest.Name,
+                            Slug = assignRequest.Name.ToSlug()
+                        };
                         context.Technologies.Add(technology);
                         await context.SaveChangesAsync();
                     }
