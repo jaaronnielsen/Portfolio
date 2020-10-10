@@ -5,7 +5,7 @@
 <h3>@project.Title</h3>
 
 <input @bind-value="newProjectName">
-<input @bind-value="newRequirements">
+<textarea @bind="newRequirements"/>
 <input @bind-value="newDesign">
 <input @bind-value="newCompletedDate">
 <button @onclick="Edit">Edit Project</button>
@@ -21,7 +21,7 @@
     <label>Title</label>
     <p>@project.Title</p>
     <label>Requirments</label>
-    <p>@project.Requirements</p>
+    <MarkdownView Content="@newRequirements" />
     <label>Design</label>
     <p>@project.Design</p>
     <label>Date Completed</label>
