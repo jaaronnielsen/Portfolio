@@ -1,0 +1,49 @@
+﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@using Portfolio.shared
+
+<input @bind-value="newLanguageName" />
+<button @onclick="(() => assign(language))">Add Language</button>
+<input @bind-value="newTechnologyName" />
+<button @onclick="(() => assign(technology))">Add Technology</button>
+<input @bind-value="newPlatformName" />
+<button @onclick="(() => assign(platform))">Add Platform</button>
+
+@code {
+    [Parameter]
+    public string Slug { get; set; }
+    private string newLanguageName;
+    private string newTechnologyName;
+    private string newPlatformName;
+    private Project project = new Project();
+    
+    private const string language = "language";
+    private const string technology = "technology";
+    private const string platform = "platform";
+
+    async Task refreshAsync() => project = await projectApi.GetProjectBySlugAsync(Slug);
+
+    protected override async Task OnInitializedAsync()
+    {
+        project = await projectApi.GetProjectBySlugAsync(Slug);
+       
+    }
+
+    private async Task assign(string category)
+    {
+        if (category == language)
+        {
+            await projectApi.AssignAsync(Portfolio.shared.Project.LanguageCategory, project.Id, newLanguageName.ToLower());
+            await refreshAsync();
+        }
+        else if (category == technology)
+        {
+            await projectApi.AssignAsync(Portfolio.shared.Project.TechnologyCategory, project.Id, newTechnologyName.ToLower());
+            await refreshAsync();
+        }
+        else
+        {
+            await projectApi.AssignAsync(Portfolio.shared.Project.PlatformCategory, project.Id, newPlatformName.ToLower());
+            await refreshAsync();
+        }
+    }
+}

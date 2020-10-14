@@ -1,0 +1,33 @@
+﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@using Portfolio.shared
+
+<h4>Title</h4>
+<p>@project.Title</p>
+
+<h4>Requirments</h4>
+<MarkdownView Content="@newRequirements" />
+
+<h4>Design</h4>
+<p>@project.Design</p>
+
+<h4>Date Completed</h4>
+<p>@project.CompletedDate</p>
+
+@code {
+    [Parameter]
+    public string Slug { get; set; }
+    private Project project = new Project();
+    private string newProjectName;
+    private string newRequirements;
+    private string newDesign;
+    private DateTime newCompletedDate;
+
+    protected override async Task OnInitializedAsync()
+    {
+        project = await projectApi.GetProjectBySlugAsync(Slug);
+        newProjectName = project.Title;
+        newRequirements = project.Requirements;
+        newDesign = project.Design;
+        newCompletedDate = project.CompletedDate;
+    }
+}

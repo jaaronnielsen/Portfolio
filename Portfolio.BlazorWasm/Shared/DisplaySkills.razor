@@ -1,0 +1,57 @@
+﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@using Portfolio.shared
+
+<div>
+    <div>
+        <h5>Languages</h5>
+        <p>
+            @foreach (var l in Languages)
+            {
+                <ul>
+                    <li><a href="language/@l.Slug">@l.Name</a></li>
+                </ul>
+            }
+        </p>
+    </div>
+    <div>
+        <h5>Technologies</h5>
+        <p>
+            @foreach (var t in Technologies)
+            {
+                <ul>
+                    <li><a href="technology/@t.Slug">@t.Name</a></li>
+                </ul>
+            }
+        </p>
+    </div>
+    <div>
+        <h5>Platforms</h5>
+        <p>
+            @foreach (var p in Platforms)
+            {
+                <ul>
+                    <li><a href="platform/@p.Slug">@p.Name</a></li>
+                </ul>
+            }
+        </p>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string Slug { get; set; }
+    private Project project = new Project();
+    private IEnumerable<Language> Languages = new List<Language>();
+    private IEnumerable<Technology> Technologies = new List<Technology>();
+    private IEnumerable<Portfolio.shared.Platform> Platforms = new List<Portfolio.shared.Platform>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        project = await projectApi.GetProjectBySlugAsync(Slug);
+        Languages = await projectApi.GetLanguagesByProjectId(project.Id);
+        Technologies = await projectApi.GetTechnologyByProjectId(project.Id);
+        Platforms = await projectApi.GetPlatformsByProjectId(project.Id);
+
+    }
+
+
+}

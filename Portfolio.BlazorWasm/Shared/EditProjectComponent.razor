@@ -1,0 +1,38 @@
+﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@using Portfolio.shared
+
+<h3>@project.Title</h3>
+
+<input @bind-value="newProjectName">
+<textarea @bind="newRequirements" />
+<input @bind-value="newDesign">
+<input @bind-value="newCompletedDate">
+<button @onclick="Edit">Edit Project</button>
+
+@code {
+    [Parameter]
+    public string Slug { get; set; }
+    private string newProjectName;
+    private string newRequirements;
+    private string newDesign;
+    private DateTime newCompletedDate;
+    private Project project = new Project();
+
+    public void Edit()
+    {
+        project.Title = newProjectName ?? project.Title;
+        project.Requirements = newRequirements ?? project.Requirements;
+        project.Design = newDesign ?? project.Design;
+        project.CompletedDate = newCompletedDate;
+        projectApi.EditProject(project);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        project = await projectApi.GetProjectBySlugAsync(Slug);
+        newProjectName = project.Title;
+        newRequirements = project.Requirements;
+        newDesign = project.Design;
+        newCompletedDate = project.CompletedDate;
+    }
+}

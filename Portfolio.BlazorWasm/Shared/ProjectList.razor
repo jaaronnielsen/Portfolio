@@ -1,0 +1,41 @@
+﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject NavigationManager uriHelper
+@using Portfolio.shared
+
+<h3>List of Projects</h3>
+<div class="row">
+    @foreach (var p in projects)
+    {
+        <div class="col-sm-3">
+            <div class="card" style="width: 18rem;">
+                <h5 class="card-header">@p.Title</h5>
+                <div class="card-body">
+                    <p class="card-text">@p.Design</p>
+                    <button class="btn-danger" @onclick="(() => Delete(p))">Delete</button>
+                    <button class="btn-primary" @onclick="(() => NavToEdit(p.Slug))">Edit</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@code {
+
+    private IEnumerable<Project> projects = new List<Project>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await projectApi.GetProjectsAsync();
+    }
+
+    private void Delete(Project project)
+    {
+        projectApi.DeleteProject(project);
+    }
+
+    private void NavToEdit(string slug)
+    {
+        uriHelper.NavigateTo("editproject/" + slug);
+    }
+}

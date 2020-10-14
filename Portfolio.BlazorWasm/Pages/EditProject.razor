@@ -2,128 +2,23 @@
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
 
-<h3>@project.Title</h3>
+<EditProjectComponent Slug="@Slug" />
 
-<input @bind-value="newProjectName">
-<textarea @bind="newRequirements"/>
-<input @bind-value="newDesign">
-<input @bind-value="newCompletedDate">
-<button @onclick="Edit">Edit Project</button>
+<hr />
 
-<input @bind-value="newLanguageName" />
-<button @onclick="(() => assign(language))">Add Language</button>
-<input @bind-value="newTechnologyName" />
-<button @onclick="(() => assign(technology))">Add Technology</button>
-<input @bind-value="newPlatformName" />
-<button @onclick="(() => assign(platform))">Add Platform</button>
+<AddSkills Slug="@Slug" />
 
-<div>
-    <label>Title</label>
-    <p>@project.Title</p>
-    <label>Requirments</label>
-    <MarkdownView Content="@newRequirements" />
-    <label>Design</label>
-    <p>@project.Design</p>
-    <label>Date Completed</label>
-    <p>@project.CompletedDate</p>
-    <div>
-        <h5>Languages</h5>
-        <p>
-            @foreach (var l in Languages)
-            {
-                <ul>
-                    <li><a href="language/@l.Slug">@l.Name</a></li>
-                </ul>
-            }
-        </p>
-    </div>
-    <div>
-        <h5>Technologies</h5>
-        <p>
-            @foreach (var t in Technologies)
-            {
-                <ul>
-                    <li><a href="technology/@t.Slug">@t.Name</a></li>
-                </ul>
-            }
-        </p>
-    </div>
-    <div>
-        <h5>Platforms</h5>
-        <p>
-            @foreach (var p in Platforms)
-            {
-                <ul>
-                    <li><a href="platform/@p.Slug">@p.Name</a></li>
-                </ul>
-            }
-        </p>
-    </div>
-</div>
+<hr />
+
+<SingleProject Slug="@Slug" />
+
+<hr />
+
+<DisplaySkills Slug="@Slug" />
 
 
 
 @code {
     [Parameter]
     public string Slug { get; set; }
-    private string newProjectName;
-    private string newRequirements;
-    private string newDesign;
-    private string newLanguageName;
-    private string newTechnologyName;
-    private string newPlatformName;
-    private DateTime newCompletedDate;
-    private Project project = new Project();
-    private IEnumerable<Language> Languages = new List<Language>();
-    private IEnumerable<Technology> Technologies = new List<Technology>();
-    private IEnumerable<Portfolio.shared.Platform> Platforms = new List<Portfolio.shared.Platform>();
-
-    private const string language = "language";
-    private const string technology = "technology";
-    private const string platform = "platform";
-
-    async Task refreshAsync() => project = await projectApi.GetProjectBySlugAsync(Slug);
-
-    public void Edit()
-    {
-        project.Title = newProjectName ?? project.Title;
-        project.Requirements = newRequirements ?? project.Requirements;
-        project.Design = newDesign ?? project.Design;
-        project.CompletedDate = newCompletedDate;
-        projectApi.EditProject(project);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        project = await projectApi.GetProjectBySlugAsync(Slug);
-        newProjectName = project.Title;
-        newRequirements = project.Requirements;
-        newDesign = project.Design;
-        newCompletedDate = project.CompletedDate;
-
-        Languages = await projectApi.GetLanguagesByProjectId(project.Id);
-        Technologies = await projectApi.GetTechnologyByProjectId(project.Id);
-        Platforms = await projectApi.GetPlatformsByProjectId(project.Id);
-    }
-
-
-
-    private async Task assign(string category)
-    {
-        if (category == language)
-        {
-            await projectApi.AssignAsync(Portfolio.shared.Project.LanguageCategory, project.Id, newLanguageName.ToLower());
-            await refreshAsync();
-        }
-        else if (category == technology)
-        {
-            await projectApi.AssignAsync(Portfolio.shared.Project.TechnologyCategory, project.Id, newTechnologyName.ToLower());
-            await refreshAsync();
-        }
-        else
-        {
-            await projectApi.AssignAsync(Portfolio.shared.Project.PlatformCategory, project.Id, newPlatformName.ToLower());
-            await refreshAsync();
-        }
-    }
 }
