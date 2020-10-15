@@ -1,4 +1,4 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@*<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Jaaron's Portfolio</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -28,7 +28,25 @@
             </NavLink>
         </li>
     </ul>
-</div>
+</div>*@
+<header>
+    <div class="wrapper">
+        <div class="logo">
+            <a href="">Jaaron Nielsen Software Engineer</a>
+        </div>
+        <nav class="navbar-top">
+            <a href="">Home</a>
+            <a href="resume">Resume</a>
+            <a href="skills">Skills</a>
+            <a href="donthaveskills">Don't Have Skills</a>
+            <a href="https://www.linkedin.com/in/jaaron-nielsen-a9513412a/">LinkedIn</a>
+            <a href="mailto:nielsenjaaron@gmail.com" target="_blank" rel="noopener noreferrer">Email</a>
+        </nav>
+    </div>
+</header>
+
+
+
 
 @code {
     private bool collapseNavMenu = true;
