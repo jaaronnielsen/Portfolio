@@ -27,7 +27,7 @@ app {
 }
 
 .main {
-    flex: 1;
+    flex: 2;
 }
 
     .main .top-row {
@@ -46,8 +46,14 @@ app {
     text-overflow: ellipsis;
 }
 
+
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    float: right;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
 }
 
     .sidebar .top-row {
@@ -102,7 +108,7 @@ app {
 }
 
 .navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: lightskyblue;
 }
 
 .valid.modified:not([type=checkbox]) {
