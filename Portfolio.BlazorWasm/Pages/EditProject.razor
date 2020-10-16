@@ -2,19 +2,24 @@
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
 
-<EditProjectComponent Slug="@Slug" />
 
-<hr />
+    <EditProjectComponent Slug="@Slug" />
 
-<AddSkills Slug="@Slug" />
+    <hr />
 
-<hr />
+    <AddSkills Slug="@Slug" />
 
-<SingleProject Slug="@Slug" />
+    <hr />
+    <div style="height:600px;overflow-y:scroll">
+        <SingleProject Slug="@Slug" />
 
-<hr />
+        <br />
 
-<DisplaySkills Slug="@Slug" />
+        <DisplaySkills Slug="@Slug" />
+    </div>
+   
+
+
 
 
 

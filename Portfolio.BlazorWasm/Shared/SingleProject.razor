@@ -1,17 +1,20 @@
 ﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
 
-<h4>Title</h4>
-<p>@project.Title</p>
+<div>
+    <h4>Title</h4>
+    <p>@project.Title</p>
 
-<h4>Requirments</h4>
-<MarkdownView Content="@newRequirements" />
+    <h4>Requirments</h4>
+    <MarkdownView Content="@newRequirements" />
 
-<h4>Design</h4>
-<p>@project.Design</p>
+    <h4>Design</h4>
+    <p>@project.Design</p>
 
-<h4>Date Completed</h4>
-<p>@project.CompletedDate</p>
+    <h4>Date Completed</h4>
+    <p>@project.CompletedDate</p>
+</div>
+
 
 @code {
     [Parameter]
