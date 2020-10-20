@@ -1,5 +1,5 @@
 ﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
-@using Portfolio.shared
+@using Portfolio.shared 
 
 <div>
     <div>
@@ -50,7 +50,6 @@
         Languages = await projectApi.GetLanguagesByProjectId(project.Id);
         Technologies = await projectApi.GetTechnologyByProjectId(project.Id);
         Platforms = await projectApi.GetPlatformsByProjectId(project.Id);
-
     }
 
 

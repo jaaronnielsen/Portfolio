@@ -4,7 +4,7 @@
 
 <h3>Languages</h3>
 <h4>@Language.Name</h4>
-<div style="height:600px;overflow-y:scroll">
+<div style="height:800px;overflow-y:scroll">
     @foreach (var p in projects)
     {
         <ul>
@@ -17,7 +17,7 @@
 @code {
     [Parameter]
     public string Slug { get; set; }
-    
+
     private Language Language = new Language();
     private IEnumerable<Project> projects = new List<Project>();
 
@@ -26,5 +26,6 @@
     {
         Language = await projectApi.GetLanguageBySlugAsync(Slug);
         projects = await projectApi.getProjectsForLanguages(Language.Id);
+
     }
 }

@@ -4,7 +4,7 @@
 
 <h3>Technologies</h3>
 <h4>@Technology.Name</h4>
-<div style="height:600px;overflow-y:scroll">
+<div style="height:800px;overflow-y:scroll">
     @foreach (var p in projects)
     {
         <ul>
@@ -22,7 +22,7 @@
 
 
     protected override async Task OnInitializedAsync()
-    {
+    {      
         Technology = await projectApi.GetTechnologyBySlugAsync(Slug);
         projects = await projectApi.getProjectsForTechnologies(Technology.Id);
     }
