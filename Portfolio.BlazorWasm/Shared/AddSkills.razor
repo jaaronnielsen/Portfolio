@@ -2,11 +2,11 @@
 @using Portfolio.shared
 
 <input @bind-value="newLanguageName" />
-<button @onclick="(() => assign(language))">Add Language</button>
+<button class="btn-info" @onclick="(() => assign(language))">Add Language</button>
 <input @bind-value="newTechnologyName" />
-<button @onclick="(() => assign(technology))">Add Technology</button>
+<button class="btn-info" @onclick="(() => assign(technology))">Add Technology</button>
 <input @bind-value="newPlatformName" />
-<button @onclick="(() => assign(platform))">Add Platform</button>
+<button class="btn-info" @onclick="(() => assign(platform))">Add Platform</button>
 
 @code {
     [Parameter]

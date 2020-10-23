@@ -16,7 +16,8 @@
     <textarea @bind="newCompletedDate" placeholder="Date Completed" class="form-control" rows="3" />
 </div>
 <div>
-    <button @onclick="Edit">Edit Project</button>
+    <button class="btn-success" @onclick="Edit">Edit Project</button>
+    <button class="btn-danger" @onclick="(() => Delete(project))">Delete</button>
 </div>
 
 @code {
@@ -44,5 +45,10 @@
         newRequirements = project.Requirements;
         newDesign = project.Design;
         newCompletedDate = project.CompletedDate;
+    }
+
+    private void Delete(Project project)
+    {
+        projectApi.DeleteProject(project);
     }
 }

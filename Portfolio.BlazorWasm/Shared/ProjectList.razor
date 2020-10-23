@@ -11,8 +11,7 @@
                 <h5 class="card-header">@p.Title</h5>
                 <div class="card-body">
                     <p class="card-text">@p.Design</p>
-                    <button class="btn-danger" @onclick="(() => Delete(p))">Delete</button>
-                    <button class="btn-primary" @onclick="(() => NavToEdit(p.Slug))">Edit</button>
+                    <button class="btn-primary" @onclick="(() => NavToView(p.Slug))">View</button>
                 </div>
             </div>
         </div>
@@ -29,13 +28,8 @@
         projects = await projectApi.GetProjectsAsync();
     }
 
-    private void Delete(Project project)
+    private void NavToView(string slug)
     {
-        projectApi.DeleteProject(project);
-    }
-
-    private void NavToEdit(string slug)
-    {
-        uriHelper.NavigateTo("editproject/" + slug);
+        uriHelper.NavigateTo("viewproject/" + slug);
     }
 }

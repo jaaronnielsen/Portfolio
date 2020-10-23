@@ -1,8 +1,8 @@
 ﻿@page "/"
+@inject NavigationManager uriHelper
 
 <div style="height:800px;overflow-y:scroll">
-    <AddProject />
-    <hr />
+    <button class="btn-success" @onclick="(() => NavToAddProject())">Add Project</button>
     <ProjectList />
 </div>
   >
@@ -11,5 +11,8 @@
 
 
 @code {
-   
+    private void NavToAddProject()
+    {
+        uriHelper.NavigateTo("addprojectpage/");
+    }
 }

@@ -1,0 +1,28 @@
+﻿@page "/viewproject/{Slug}"
+@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject NavigationManager uriHelper
+@using Portfolio.shared
+
+
+<div style="height:800px;overflow-y:scroll">
+
+    <SingleProject Slug="@Slug" />
+
+    <hr />
+
+    <DisplaySkills Slug="@Slug" />
+
+    <hr />
+    <button class="btn-warning" @onclick="(() => NavToEdit(Slug))">Edit</button>
+</div>
+
+@code {
+    [Parameter]
+    public string Slug { get; set; }
+
+    private void NavToEdit(string slug)
+    {
+        uriHelper.NavigateTo("editproject/" + slug);
+    }
+}
+
