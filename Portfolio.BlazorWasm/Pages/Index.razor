@@ -1,18 +1,31 @@
 ﻿@page "/"
 @inject NavigationManager uriHelper
+@inject AuthenticationStateProvider authStateProvider
 
 <div style="height:800px;overflow-y:scroll">
-    <button class="btn-success" @onclick="(() => NavToAddProject())">Add Project</button>
+    @if (isAdmin)
+    {
+        <button class="btn-success" @onclick="(() => NavToAddProject())">Add Project</button>
+    }
     <ProjectList />
 </div>
-  >
 
 
 
 
 @code {
+    bool isAdmin;
     private void NavToAddProject()
     {
         uriHelper.NavigateTo("addprojectpage/");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var roles = from c in authState.User.Claims
+                    where c.Type == "https://schemas.dev-ztkpmk50.com/roles"
+                    select c.Value;
+        isAdmin = roles.Any(r => r.Contains("Admin"));
     }
 }

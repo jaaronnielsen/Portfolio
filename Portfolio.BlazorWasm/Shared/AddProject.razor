@@ -1,4 +1,5 @@
 ﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager uriHelper
 
 @using Portfolio.shared
@@ -7,22 +8,26 @@
 <div class="form-group">
     <textarea @bind="newProjectName" placeholder="Title" class="form-control" rows="2" />
 </div>
-<div  class="form-group">
-    <textarea @bind="newRequirements" placeholder="Requirments" class="form-control" rows="2"/>
+<div class="form-group">
+    <textarea @bind="newRequirements" placeholder="Requirments" class="form-control" rows="2" />
 </div>
-<div  class="form-group">
-    <textarea @bind="newDesign" placeholder="Design" class="form-control" rows="3"/>
+<div class="form-group">
+    <textarea @bind="newDesign" placeholder="Design" class="form-control" rows="3" />
 </div>
 <div>
     <textarea @bind="newCompletedDate" placeholder="Date Completed" class="form-control" rows="2" />
 </div>
-<div>
-    <button class="btn-warning" @onclick="addProject">Add Project</button>
-</div>
+@if (isAdmin)
+{
+    <div>
+        <button class="btn-warning" @onclick="addProject">Add Project</button>
+    </div>
+}
 
 <hr />
 
 @code {
+    bool isAdmin;
     private string newProjectName;
     private string newRequirements;
     private string newDesign;
@@ -39,5 +44,14 @@
         };
         await projectApi.AddProjectAsync(project);
 
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var roles = from c in authState.User.Claims
+                    where c.Type == "https://schemas.dev-ztkpmk50.com/roles"
+                    select c.Value;
+        isAdmin = roles.Any(r => r.Contains("Admin"));
     }
 }

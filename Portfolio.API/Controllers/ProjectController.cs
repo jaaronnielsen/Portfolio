@@ -30,25 +30,28 @@ namespace Portfolio.Api.Controllers
             return await repository.Projects.ToListAsync();
         }
 
+        [Authorize]
         [HttpPost()]
         public async Task Post(Project project)
         {
            await repository.AddProjectAsync(project);
         }
 
+        [Authorize]
         [HttpPost("[action]")]
         public void EditProject(Project project)
         {
             repository.EditProjects(project);
         }
 
+        [Authorize]
         [HttpPost("[action]")]
         public void DeleteProject(Project project)
         {
             repository.DeleteProject(project);
         }
 
-        [Authorize]
+       
         [HttpGet("{slug}")]
         public async Task<Project> GetProjectBySlug(string slug)
         {
@@ -90,7 +93,7 @@ namespace Portfolio.Api.Controllers
             });
         }
 
-
+        [Authorize]
         [HttpPost("[action]")]
         public async Task Assign(AssignRequest assignRequest)
         {

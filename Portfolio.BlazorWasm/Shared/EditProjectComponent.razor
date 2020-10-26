@@ -1,4 +1,5 @@
 ﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject AuthenticationStateProvider authStateProvider
 @using Portfolio.shared
 
 <h3>@project.Title</h3>
@@ -15,14 +16,19 @@
 <div>
     <textarea @bind="newCompletedDate" placeholder="Date Completed" class="form-control" rows="3" />
 </div>
-<div>
-    <button class="btn-success" @onclick="Edit">Edit Project</button>
-    <button class="btn-danger" @onclick="(() => Delete(project))">Delete</button>
-</div>
+@if (isAdmin)
+{
+    <div>
+        <button class="btn-success" @onclick="Edit">Edit Project</button>
+        <button class="btn-danger" @onclick="(() => Delete(project))">Delete</button>
+    </div>
+}
+
 
 @code {
     [Parameter]
     public string Slug { get; set; }
+    bool isAdmin;
     private string newProjectName;
     private string newRequirements;
     private string newDesign;
@@ -45,6 +51,12 @@
         newRequirements = project.Requirements;
         newDesign = project.Design;
         newCompletedDate = project.CompletedDate;
+
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var roles = from c in authState.User.Claims
+                    where c.Type == "https://schemas.dev-ztkpmk50.com/roles"
+                    select c.Value;
+        isAdmin = roles.Any(r => r.Contains("Admin"));
     }
 
     private void Delete(Project project)

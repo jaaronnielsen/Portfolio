@@ -1,5 +1,6 @@
 ﻿@page "/viewproject/{Slug}"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager uriHelper
 @using Portfolio.shared
 
@@ -13,16 +14,30 @@
     <DisplaySkills Slug="@Slug" />
 
     <hr />
-    <button class="btn-warning" @onclick="(() => NavToEdit(Slug))">Edit</button>
+    @if (isAdmin)
+    {
+        <button class="btn-warning" @onclick="(() => NavToEdit(Slug))">Edit</button>
+    }
+
 </div>
 
 @code {
     [Parameter]
     public string Slug { get; set; }
+    bool isAdmin;
 
     private void NavToEdit(string slug)
     {
         uriHelper.NavigateTo("editproject/" + slug);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var roles = from c in authState.User.Claims
+                    where c.Type == "https://schemas.dev-ztkpmk50.com/roles"
+                    select c.Value;
+        isAdmin = roles.Any(r => r.Contains("Admin"));
     }
 }
 

@@ -1,18 +1,33 @@
 ﻿@page "/editproject/{Slug}"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject AuthenticationStateProvider authStateProvider
 @using Portfolio.shared
 @attribute [Authorize]
 
 
-<div style="height:800px;overflow-y:scroll">
-    <EditProjectComponent Slug="@Slug" />
+@if (isAdmin)
+{
 
-    <hr />
+    <div style="height:800px;overflow-y:scroll">
+        <EditProjectComponent Slug="@Slug" />
 
-    <AddSkills Slug="@Slug" />
-</div>
+        <hr />
+
+        <AddSkills Slug="@Slug" />
+    </div>
+}
 
 @code {
     [Parameter]
     public string Slug { get; set; }
+    bool isAdmin;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var roles = from c in authState.User.Claims
+                    where c.Type == "https://schemas.dev-ztkpmk50.com/roles"
+                    select c.Value;
+        isAdmin = roles.Any(r => r.Contains("Admin"));
+    }
 }

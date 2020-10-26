@@ -1,11 +1,29 @@
 ﻿@page "/addprojectpage"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject AuthenticationStateProvider authStateProvider
 @using Portfolio.shared
 @attribute [Authorize]
 
+
+@if (isAdmin)
+{
 <div>
     <AddProject />
 </div>
-@code {
+}
+    
 
+
+
+@code {
+    bool isAdmin;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
+        var roles = from c in authState.User.Claims
+                    where c.Type == "https://schemas.dev-ztkpmk50.com/roles"
+                    select c.Value;
+        isAdmin = roles.Any(r => r.Contains("Admin"));
+    }
 }
