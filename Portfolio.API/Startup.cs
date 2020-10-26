@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Portfolio.Api.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Portfolio.Api
 {
@@ -27,6 +28,15 @@ namespace Portfolio.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = $"{Configuration["Auth0:Authority"]}";
+                options.Audience = Configuration["Auth0:ApiIdentifier"];
+            });
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["DATABASE_URL"])));
             services.AddTransient<IRepository, EfCoreRepository>();
@@ -64,7 +74,7 @@ namespace Portfolio.Api
             app.UseRouting();
 
             app.UseCors();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

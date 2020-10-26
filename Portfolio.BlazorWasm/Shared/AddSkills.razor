@@ -1,6 +1,7 @@
 ﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
 
+
 <input @bind-value="newLanguageName" />
 <button class="btn-info" @onclick="(() => assign(language))">Add Language</button>
 <input @bind-value="newTechnologyName" />

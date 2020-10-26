@@ -6,16 +6,20 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using System.Net.Http.Headers;
 
 namespace Portfolio.BlazorWasm
 {
     public class ProjectApiService
     {
         private readonly HttpClient client;
+        private readonly IAccessTokenProvider tokenProvider;
 
-        public ProjectApiService(HttpClient client)
+        public ProjectApiService(HttpClient client, IAccessTokenProvider tokenProvider)
         {
             this.client = client;
+            this.tokenProvider = tokenProvider;
         }
 
         public async Task<IEnumerable<Project>> GetProjectsAsync()

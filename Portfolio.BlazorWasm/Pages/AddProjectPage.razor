@@ -1,6 +1,8 @@
 ﻿@page "/addprojectpage"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
+@attribute [Authorize]
+
 <div>
     <AddProject />
 </div>

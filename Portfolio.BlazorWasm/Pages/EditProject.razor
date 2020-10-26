@@ -1,6 +1,8 @@
 ﻿@page "/editproject/{Slug}"
 @inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @using Portfolio.shared
+@attribute [Authorize]
+
 
 <div style="height:800px;overflow-y:scroll">
     <EditProjectComponent Slug="@Slug" />
