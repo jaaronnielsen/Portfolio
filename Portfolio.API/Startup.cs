@@ -28,15 +28,7 @@ namespace Portfolio.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.Authority = $"{Configuration["Auth0:Authority"]}";
-                options.Audience = Configuration["Auth0:ApiIdentifier"];
-            });
+            
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(convertUrlConnectionString(Configuration["DATABASE_URL"])));
             services.AddTransient<IRepository, EfCoreRepository>();
@@ -51,7 +43,20 @@ namespace Portfolio.Api
                                .AllowAnyHeader();
                     });
             });
-
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = $"{Configuration["Auth0:Authority"]}";
+                options.Audience = Configuration["Auth0:ApiIdentifier"];
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    NameClaimType = "Roles",
+                    RoleClaimType = "https://schemas.dev-ztkpmk50.com/roles"
+                };
+            });
             services.AddControllersWithViews()
                .AddNewtonsoftJson(options =>
                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

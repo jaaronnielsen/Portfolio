@@ -1,4 +1,5 @@
 ﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject Portfolio.BlazorWasm.PublicProjectApiService publicProjectApi
 @using Portfolio.shared
 
 
@@ -16,17 +17,17 @@
     private string newTechnologyName;
     private string newPlatformName;
     private Project project = new Project();
-    
+
     private const string language = "language";
     private const string technology = "technology";
     private const string platform = "platform";
 
-    async Task refreshAsync() => project = await projectApi.GetProjectBySlugAsync(Slug);
+    async Task refreshAsync() => project = await publicProjectApi.GetProjectBySlugAsync(Slug);
 
     protected override async Task OnInitializedAsync()
     {
-        project = await projectApi.GetProjectBySlugAsync(Slug);
-       
+        project = await publicProjectApi.GetProjectBySlugAsync(Slug);
+
     }
 
     private async Task assign(string category)

@@ -1,4 +1,5 @@
 ﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
+@inject Portfolio.BlazorWasm.PublicProjectApiService publicProjectApi
 @inject AuthenticationStateProvider authStateProvider
 @using Portfolio.shared
 
@@ -46,7 +47,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        project = await projectApi.GetProjectBySlugAsync(Slug);
+        project = await publicProjectApi.GetProjectBySlugAsync(Slug);
         newProjectName = project.Title;
         newRequirements = project.Requirements;
         newDesign = project.Design;

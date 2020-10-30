@@ -1,8 +1,11 @@
 ﻿@inject Portfolio.BlazorWasm.ProjectApiService projectApi
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager uriHelper
+@inject IAccessTokenProvider TokenProvider
 
 @using Portfolio.shared
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Net.Http.Headers
 
 <h3>Add a project</h3>
 <div class="form-group">
@@ -17,12 +20,10 @@
 <div>
     <textarea @bind="newCompletedDate" placeholder="Date Completed" class="form-control" rows="2" />
 </div>
-@if (isAdmin)
-{
-    <div>
-        <button class="btn-warning" @onclick="addProject">Add Project</button>
-    </div>
-}
+<div>
+    <button class="btn-warning" @onclick="addProject">Add Project</button>
+</div>
+
 
 <hr />
 
@@ -44,14 +45,5 @@
         };
         await projectApi.AddProjectAsync(project);
 
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await authStateProvider.GetAuthenticationStateAsync();
-        var roles = from c in authState.User.Claims
-                    where c.Type == "https://schemas.dev-ztkpmk50.com/roles"
-                    select c.Value;
-        isAdmin = roles.Any(r => r.Contains("Admin"));
     }
 }

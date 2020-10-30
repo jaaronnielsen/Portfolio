@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Http;
 using Ganss.XSS;
 using Microsoft.AspNetCore.Routing;
 using Portfolio.shared;
@@ -33,8 +34,15 @@ namespace Portfolio.BlazorWasm
 
             var baseAddress = builder.Configuration["HttpClientBaseAddress"];
             builder.Services.AddHttpClient<ProjectApiService>(hc => hc.BaseAddress = new Uri(baseAddress))
+                .AddHttpMessageHandler<Auth0AuthorizationMessageHandler>()
                 .SetHandlerLifetime(TimeSpan.FromMinutes(5))
                 .AddPolicyHandler(GetRetryPolicy());
+
+            builder.Services.AddHttpClient<PublicProjectApiService>(hc => hc.BaseAddress = new Uri(baseAddress))
+                .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                .AddPolicyHandler(GetRetryPolicy());
+
+
             builder.Services.AddScoped<IHtmlSanitizer, HtmlSanitizer>(x =>
             {
                 var sanitizer = new Ganss.XSS.HtmlSanitizer();
@@ -44,12 +52,6 @@ namespace Portfolio.BlazorWasm
             builder.Services.Configure<RouteOptions>(options =>
             {
                 options.ConstraintMap.Add("slug", typeof(SlugParameterTransformer));
-            });
-
-            builder.Services.AddOidcAuthentication(options =>
-            {
-                builder.Configuration.Bind("Auth0", options.ProviderOptions);
-                options.ProviderOptions.ResponseType = "code";
             });
 
             await builder.Build().RunAsync();

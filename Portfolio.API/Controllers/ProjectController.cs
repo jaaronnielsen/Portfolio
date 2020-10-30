@@ -30,22 +30,25 @@ namespace Portfolio.Api.Controllers
             return await repository.Projects.ToListAsync();
         }
 
-        [Authorize]
+        
         [HttpPost()]
+        [Authorize(Roles = Roles.Admin)]
         public async Task Post(Project project)
         {
            await repository.AddProjectAsync(project);
         }
 
-        [Authorize]
+       
         [HttpPost("[action]")]
+        [Authorize(Roles = Roles.Admin)]
         public void EditProject(Project project)
         {
             repository.EditProjects(project);
         }
 
-        [Authorize]
+        
         [HttpPost("[action]")]
+        [Authorize(Roles = Roles.Admin)]
         public void DeleteProject(Project project)
         {
             repository.DeleteProject(project);
@@ -93,8 +96,9 @@ namespace Portfolio.Api.Controllers
             });
         }
 
-        [Authorize]
+        
         [HttpPost("[action]")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task Assign(AssignRequest assignRequest)
         {
             await repository.AssignCategoryAsync(assignRequest);
