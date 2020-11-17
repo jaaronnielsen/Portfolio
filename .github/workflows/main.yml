@@ -12,18 +12,7 @@ jobs:
     steps:
     # uses GitHub's checkout action to checkout code form the master branch
     - uses: actions/checkout@v2
-    - name: log untrusted output
-      run: |
 
-        # disable command workflow processing
-        echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
-
-        # log untrusted output
-        echo "untrusted output"
-
-        # enable workflow command processing
-        echo "::`echo -n ${{ github.token }} | sha256sum | head -c 64`::"
-        
     # sets up .NET Core SDK 3.1
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.6.0
